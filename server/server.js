@@ -18,7 +18,7 @@ const pool = mysql.createPool({
 });
 
 app.get('/', (req, res) => {
-    res.send("Teste");
+    res.send("Servidor Backend");
 });
 
 app.listen(port, () => {
