@@ -18,9 +18,16 @@ const pool = mysql.createPool({
 });
 
 app.get('/', (req, res) => {
-    res.send("Servidor Backend");
+    pool.query('SELECT 1 + 1 AS result', (err, results ) => {
+        if (err) {
+            console.error('DB error: ', err);
+            return res.status(500).send('Database connection failed');
+        }
+
+        res.send(`Database OK! Result: ${results[0].result}`);
+    });
 });
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
-})
+});
