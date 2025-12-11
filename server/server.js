@@ -1,10 +1,14 @@
 const express = require('express');
 const mysql = require('mysql2');
+const cors = require('cors');
 
 require('dotenv').config();
 
 const app = express();
 const port = 3000;
+
+app.use(cors());
+app.use(express.json());
 
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
@@ -18,13 +22,17 @@ const pool = mysql.createPool({
 });
 
 app.get('/', (req, res) => {
+    res.send("Hello World");
+})
+
+app.get('/test-db', (req, res) => {
     pool.query('SELECT 1 + 1 AS result', (err, results ) => {
         if (err) {
             console.error('DB error: ', err);
             return res.status(500).send('Database connection failed');
         }
 
-        res.send(`Database OK! Result: ${results[0].result}`);
+        res.json({ message: 'Database OK!', result: results[0].result });
     });
 });
 
