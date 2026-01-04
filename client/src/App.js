@@ -1,4 +1,5 @@
 import { useEffect, useState} from "react";
+import Login from "./pages/Login.jsx";
 
 function App() {
   const [data, setData] = useState(null);
@@ -12,13 +13,7 @@ function App() {
 
   return (
     <div>
-      <h1>React + Express Test</h1>
-
-      {data ? (
-        <p>{data.message} → Result: {data.result}</p>
-      ) : (
-        <p>Loading...</p>
-      )}
+      <Login/>
     </div>
   );
 }
