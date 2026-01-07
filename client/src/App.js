@@ -1,8 +1,8 @@
-import { useEffect, useState} from "react";
+// import { useEffect, useState} from "react";
 import Login from "./pages/Login.jsx";
 
 function App() {
-  const [data, setData] = useState(null);
+  /* const [data, setData] = useState(null);
 
   useEffect(() => {
     fetch("http://localhost:3000/test-db")
@@ -10,6 +10,8 @@ function App() {
       .then(data => setData(data))
       .catch(err => console.error(err));
   }, []);
+
+  */
 
   return (
     <div>
