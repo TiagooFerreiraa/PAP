@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./Login.css";
 
 function Login() {
   const [isRegister, setIsRegister] = useState(false);
@@ -46,7 +47,6 @@ function Login() {
         setUsername("");
         setPassword("");
       } else {
-        console.log("Logged in:", data.user);
         localStorage.setItem("user", JSON.stringify(data.user));
       }
     } catch {
@@ -57,15 +57,15 @@ function Login() {
   };
 
   return (
-    <div style={{ width: "320px", margin: "100px auto" }}>
-      <h2>{isRegister ? "Register" : "Login"}</h2>
+    <div className="login-container">
+      <div className="login-card">
+        <h2>{isRegister ? "Create account" : "Welcome back"}</h2>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {message && <p style={{ color: "green" }}>{message}</p>}
+        {error && <p className="error">{error}</p>}
+        {message && <p className="success">{message}</p>}
 
-      <form onSubmit={handleSubmit}>
-        {isRegister && (
-          <>
+        <form onSubmit={handleSubmit}>
+          {isRegister && (
             <input
               type="text"
               placeholder="Username"
@@ -73,54 +73,48 @@ function Login() {
               onChange={e => setUsername(e.target.value)}
               required
             />
-            <br /><br />
-          </>
-        )}
+          )}
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required
-        />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+          />
 
-        <br /><br />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            required
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required
-        />
+          <button type="submit" disabled={loading}>
+            {loading
+              ? isRegister
+                ? "Creating account..."
+                : "Logging in..."
+              : isRegister
+                ? "Register"
+                : "Login"}
+          </button>
+        </form>
 
-        <br /><br />
-
-        <button type="submit" disabled={loading}>
-          {loading
-            ? isRegister
-              ? "Creating account..."
-              : "Logging in..."
-            : isRegister
-              ? "Register"
-              : "Login"}
-        </button>
-      </form>
-
-      <p style={{ marginTop: "10px" }}>
-        {isRegister ? "Already have an account?" : "Don't have an account?"}{" "}
-        <button
-          onClick={() => {
-            setIsRegister(!isRegister);
-            setError("");
-            setMessage("");
-          }}
-          style={{ border: "none", background: "none", color: "blue", cursor: "pointer" }}
-        >
-          {isRegister ? "Login" : "Register"}
-        </button>
-      </p>
+        <p className="switch">
+          {isRegister ? "Already have an account?" : "Don't have an account?"}
+          <span
+            onClick={() => {
+              setIsRegister(!isRegister);
+              setError("");
+              setMessage("");
+            }}
+          >
+            {isRegister ? " Login" : " Register"}
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
