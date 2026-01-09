@@ -1,22 +1,30 @@
-// import { useEffect, useState} from "react";
-import Login from "./pages/Login.jsx";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import Login from "./pages/Login";
+import Main from "./pages/Main";
 
 function App() {
-  /* const [data, setData] = useState(null);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/test-db")
-      .then(res => res.json())
-      .then(data => setData(data))
-      .catch(err => console.error(err));
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
   }, []);
 
-  */
-
   return (
-    <div>
-      <Login/>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={!user ? <Login setUser={setUser} /> : <Navigate to="/main" />}
+        />
+
+        <Route
+          path="/main"
+          element={user ? <Main setUser={setUser} /> : <Navigate to="/" />}
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

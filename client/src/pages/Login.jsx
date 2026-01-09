@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
 function Login() {
@@ -11,6 +12,8 @@ function Login() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,6 +38,8 @@ function Login() {
 
       const data = await res.json();
 
+      console.log("LOGIN RESPONSE:", data);
+
       if (!res.ok) {
         setError(data.message);
         setLoading(false);
@@ -48,6 +53,7 @@ function Login() {
         setPassword("");
       } else {
         localStorage.setItem("user", JSON.stringify(data.user));
+        navigate("/main");
       }
     } catch {
       setError("Server unavailable");
