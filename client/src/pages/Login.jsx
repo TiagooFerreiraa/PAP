@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-function Login() {
+function Login({ setUser }) {
   const [isRegister, setIsRegister] = useState(false);
 
   const [username, setUsername] = useState("");
@@ -53,6 +53,7 @@ function Login() {
         setPassword("");
       } else {
         localStorage.setItem("user", JSON.stringify(data.user));
+        setUser && setUser(data.user);
         navigate("/main");
       }
     } catch {

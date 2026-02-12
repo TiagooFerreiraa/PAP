@@ -57,11 +57,25 @@ app.post('/login', (req, res) => {
         }
 
         const user = results[0];
-        const passwordMatch = await bcrypt.compare(password, user.Password);
+            // Normalize possible column names for the stored hash
+            const storedHash = user.Password ?? user.password ?? user.password_hash ?? user.PasswordHash;
 
-        if (!passwordMatch) {
-            return res.status(401).json({ message: "Invalid email or password" });
-        }
+            if (!storedHash) {
+                console.error('No password hash found for user record:', user);
+                return res.status(500).json({ message: "User record missing password hash" });
+            }
+
+            let passwordMatch = false;
+            try {
+                passwordMatch = await bcrypt.compare(password, storedHash);
+            } catch (bcryptErr) {
+                console.error('bcrypt.compare error:', bcryptErr);
+                return res.status(500).json({ message: "Authentication error" });
+            }
+
+            if (!passwordMatch) {
+                return res.status(401).json({ message: "Invalid email or password" });
+            }
 
         res.json({
             message: "Login successful",
