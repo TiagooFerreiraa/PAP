@@ -44,7 +44,7 @@ app.post('/login', (req, res) => {
         return res.status(400).json({ message: "Missing fields" });
     }
 
-    const sql = "SELECT * FROM users WHERE Email = ?";
+    const sql = "SELECT * FROM users WHERE email = ?";
 
     pool.query(sql, [email], async (err, results) => {
         if (err) {
@@ -58,7 +58,7 @@ app.post('/login', (req, res) => {
 
         const user = results[0];
             // Normalize possible column names for the stored hash
-            const storedHash = user.Password ?? user.password ?? user.password_hash ?? user.PasswordHash;
+            const storedHash = user.password ?? user.Password ?? user.password_hash ?? user.PasswordHash;
 
             if (!storedHash) {
                 console.error('No password hash found for user record:', user);
@@ -80,9 +80,10 @@ app.post('/login', (req, res) => {
         res.json({
             message: "Login successful",
             user: {
-                id: user.ID,
-                username: user.Username,
-                email: user.Email
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                role: user.role
             }
         });
     });
@@ -112,9 +113,9 @@ app.post('/register', async (req, res) => {
 
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            const sql = "INSERT INTO users (Username, Email, Password) VALUES (?, ?, ?)";
+            const sql = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
 
-            pool.query(sql, [username, email, hashedPassword], (err) => {
+            pool.query(sql, [username, email, hashedPassword, 'user'], (err) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).json({ message: "Error creating user" });
