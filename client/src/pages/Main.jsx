@@ -38,11 +38,17 @@ function Main({ setUser }) {
     fetchProducts();
   }, []);
 
-  const categories = ["all", ...Array.from(new Set(products.map(p => p.category).filter(Boolean)))];
+  const categories = [
+    "all",
+    ...Array.from(new Set(products.map(p => (p.category || p.category_name)).filter(Boolean)))
+  ];
 
   const filtered = products.filter(p => {
-    const matchesQuery = p.name.toLowerCase().includes(query.toLowerCase()) || p.description.toLowerCase().includes(query.toLowerCase());
-    const matchesCategory = category === "all" || p.category === category;
+    const name = (p.name || "").toString();
+    const desc = (p.description || "").toString();
+    const matchesQuery = name.toLowerCase().includes(query.toLowerCase()) || desc.toLowerCase().includes(query.toLowerCase());
+    const prodCategory = p.category || p.category_name || "";
+    const matchesCategory = category === "all" || prodCategory === category;
     return matchesQuery && matchesCategory;
   });
 
@@ -63,11 +69,11 @@ function Main({ setUser }) {
         <div className="nav-right">
           <select value={category} onChange={e => setCategory(e.target.value)}>
             {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+              <option key={cat} value={cat}>{cat === 'all' ? 'All categories' : cat}</option>
             ))}
           </select>
 
-          <div className="user">{user?.username || "User"}</div>
+          <div className="user">Welcome, {user?.username || "User"}</div>
           <button className="logout" onClick={logout}>Logout</button>
         </div>
       </nav>
@@ -80,12 +86,19 @@ function Main({ setUser }) {
 
           {filtered.map(p => (
             <div key={p.id} className="product-card">
-              <div className="product-image">📦</div>
+                <div className="product-image">
+                  {p.image ? (
+                    // eslint-disable-next-line jsx-a11y/img-redundant-alt
+                    <img src={p.image} alt={p.name || 'product image'} />
+                  ) : (
+                    '📦'
+                  )}
+                </div>
               <h3 className="product-name">{p.name}</h3>
               <p className="product-desc">{p.description}</p>
               <div className="product-footer">
-                <div className="price">€{p.price.toFixed(2)}</div>
-                <button className="buy" disabled={p.stock <= 0}>Add to cart</button>
+                  <div className="price">€{(Number(p.price) || 0).toFixed(2)}</div>
+                  <button className="buy" disabled={Number(p.stock) <= 0}>Add to cart</button>
               </div>
             </div>
           ))}

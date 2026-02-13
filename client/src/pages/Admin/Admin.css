@@ -1,0 +1,13 @@
+.admin-wrap { padding: 20px; }
+.admin-header { display:flex; align-items:center; justify-content:space-between; color: white; padding: 18px 24px; }
+.admin-tabs button { margin-left:8px; padding:8px 12px; border:1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); color: white; cursor:pointer; border-radius:8px; }
+.admin-tabs button.active { background: rgba(255,255,255,0.95); color: #333; }
+.panel { margin-top:16px; }
+.small-form { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
+.small-form input, .small-form select { padding:8px 10px; border-radius:8px; border:1px solid #ddd; }
+.list-table { width:100%; border-collapse:collapse; background: white; border-radius:8px; overflow:hidden; }
+.list-table th, .list-table td { border-bottom:1px solid #eee; padding:12px; text-align:left; }
+.list-table thead { background:#f6f7fb; }
+.danger { background:#e53935; color:#fff; border:none; padding:6px 8px; cursor:pointer; border-radius:6px; }
+.panel h3 { color: white; }
+.small-form button { background: #667eea; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; }

@@ -54,7 +54,12 @@ function Login({ setUser }) {
       } else {
         localStorage.setItem("user", JSON.stringify(data.user));
         setUser && setUser(data.user);
-        navigate("/main");
+        // Redirect admins to admin area
+        if (data.user?.role === 'admin') {
+          navigate('/admin');
+        } else {
+          navigate('/main');
+        }
       }
     } catch {
       setError("Server unavailable");
